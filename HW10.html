@@ -100,7 +100,7 @@
         const barChartSpec = {
             "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
             "width": 900,
-            "height": 300,
+            "height": 500,
             "title": "Country-wise Seafood Production vs. Consumption Per Capita",
             "data": {
                 "url": "https://raw.githubusercontent.com/ParkDarin/Homework10/main/data/overfishing_per_capita.csv"
@@ -172,36 +172,68 @@
                     "filter": "Data_type === 'All' || (Data_type === 'Production' && datum.Type === 'production_per_capita_kg') || (Data_type === 'Consumption' && datum.Type === 'consumption_per_capita_kg')"
                 }
             ],
-            "mark": "bar",
-            "encoding": {
-                "x": {
-                    "field": "Year",
-                    "type": "ordinal",
-                    "title": "Year"
+            "layer": [
+                {
+                    "mark": "bar",
+                    "encoding": {
+                        "x": {
+                            "field": "Year",
+                            "type": "ordinal",
+                            "title": "Year"
+                        },
+                        "xOffset": {
+                            "field": "ShortType"
+                        },
+                        "y": {
+                            "field": "kg_per_capita",
+                            "type": "quantitative",
+                            "title": "Kg Per Capita"
+                        },
+                        "color": {
+                            "field": "Type",
+                            "type": "nominal",
+                            "scale": {
+                                "domain": ["production_per_capita_kg", "consumption_per_capita_kg"],
+                                "range": ["#87AFC7", "#E57373"]
+                            },
+                            "title": "Type"
+                        },
+                        "tooltip": [
+                            { "field": "Year", "type": "ordinal" },
+                            { "field": "ShortType", "type": "nominal", "title": "Type" },
+                            { "field": "kg_per_capita", "type": "quantitative", "title": "Kg Per Capita", "format": ".2f" }
+                        ]
+                    }
                 },
-                "xOffset": {
-                    "field": "ShortType"
-                },
-                "y": {
-                    "field": "kg_per_capita",
-                    "type": "quantitative",
-                    "title": "Kg Per Capita"
-                },
-                "color": {
-                    "field": "Type",
-                    "type": "nominal",
-                    "scale": {
-                        "domain": ["production_per_capita_kg", "consumption_per_capita_kg"],
-                        "range": ["#87AFC7", "#E57373"]
+                {
+                    "mark": {
+                        "type": "text",
+                        "align": "center",
+                        "baseline": "bottom",
+                        "dy": -2,
+                        "fontSize": 6,
+                        "color": "black"
                     },
-                    "title": "Type"
-                },
-                "tooltip": [
-                    { "field": "Year", "type": "ordinal" },
-                    { "field": "ShortType", "type": "nominal", "title": "Type" },
-                    { "field": "kg_per_capita", "type": "quantitative", "title": "Kg Per Capita", "format": ".2f" }
-                ]
-            }
+                    "encoding": {
+                        "x": {
+                            "field": "Year",
+                            "type": "ordinal"
+                        },
+                        "xOffset": {
+                            "field": "ShortType"
+                        },
+                        "y": {
+                            "field": "kg_per_capita",
+                            "type": "quantitative"
+                        },
+                        "text": {
+                            "field": "kg_per_capita",
+                            "type": "quantitative",
+                            "format": ".2f"
+                        }
+                    }
+                }
+            ]
         };
 
         // Embed the map visualization
